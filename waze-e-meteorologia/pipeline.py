@@ -13,13 +13,11 @@ from typing import Any, Dict, List, Optional
 from tenacity import retry, stop_after_attempt, wait_exponential
 from geopy.geocoders import Nominatim
 
-# constantes e mapeamentos
+### constantes e mapeamentos
 FUSO = pytz.timezone('America/Sao_Paulo')
+BASE_DIR = os.path.dirname(os.path.abspath(__file__)) # diretorio das tabelas parquet
 
-# diretorio das tabelas parquet
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
-# definição de parâmetros obrigatórios (range de data a ser considerado pelo script)
+# parâmetros obrigatórios (range de data a ser considerado pelo script) e parsing
 parser = ArgumentParser()
 parser.add_argument('--start-date', type=str, required=True)
 parser.add_argument('--end-date', type=str, required=True)
@@ -51,13 +49,12 @@ def carrega_json_exemplo(arquivo):
             dados_locais = json.load(f).get("features")
         return dados_locais
 
-# processamento dos dados
+### processamento dos dados
 def processa_waze(alerts: List[Dict[str, Any]], start_date: datetime, end_date: datetime) -> pd.DataFrame:
     processado = []
     # iterando pelos objetos 'alert' para obter os dados do waze
     for alert in alerts:
-        # pubMillis (published milliseconds) é a chave para o valor de data no waze
-        pub_millis = alert.get('pubMillis')
+        pub_millis = alert.get('pubMillis') # pubMillis (published milliseconds) é a chave para o valor de data no waze
 
         # conversao ao padrao de data utc
         data_evento = datetime.fromtimestamp(
