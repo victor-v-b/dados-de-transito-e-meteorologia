@@ -10,10 +10,10 @@ pip install -r requirements.txt
 Para executar em terminal (parâmetros de data são obrigatórios):
 python pipeline.py --start-date (YYYY-MM-DD) --end-date (YYYY-MM-DD) 
 
-Exemplo:
-python pipeline.py  --start-date 2025-05-01 --end-date 2025-05-16
+                    Exemplo:
+                    python pipeline.py  --start-date 2025-05-01 --end-date 2025-05-16
 
-Features:
+**Features**:
 
 -Consome APIs em tempo real, no recorte de tempo estabelecido nos parâmetros ao rodar o script.
 
