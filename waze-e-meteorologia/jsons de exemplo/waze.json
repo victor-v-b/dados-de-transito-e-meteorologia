@@ -1,0 +1,23 @@
+{
+    "alerts": [
+        {
+            "country": "BR",
+            "city": "Rio de Janeiro",
+            "reportRating": 5,
+            "reportByMunicipalityUser": "false",
+            "confidence": 0,
+            "reliability": 6,
+            "type": "HAZARD",
+            "uuid": "2a40ac68-ec2f-404b-8acf-06efad1ca425",
+            "roadType": 1,
+            "magvar": 271,
+            "subtype": "HAZARD_ON_ROAD_POT_HOLE",
+            "street": "R. Alm. Justino Proença",
+            "location": {
+                "x": -43.560798,
+                "y": -22.8826
+            },
+            "pubMillis": 1747244272000
+        }
+    ]
+}

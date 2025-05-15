@@ -1,0 +1,33 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -43.233056,
+                    -22.9925
+                ]
+            },
+            "type": "Feature",
+            "properties": {
+                "data": {
+                    "temperature": "-",
+                    "min": "-",
+                    "max": "-",
+                    "humidity": "-",
+                    "pressure": "-",
+                    "wind": "14,4 (W)"
+                },
+                "station": {
+                    "id": 1,
+                    "name": "Vidigal"
+                },
+                "type": "text",
+                "read_at": "2025-05-15T04:55:00-03:00"
+            }
+        
+        }
+    ],
+    "updated_at": "2025-05-15T04:57:20.198001"
+}
