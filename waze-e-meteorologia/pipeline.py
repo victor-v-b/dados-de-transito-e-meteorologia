@@ -42,8 +42,6 @@ def get_meteorologia():
     return data
 
 # carrega json de exemplo caso uma API esteja fora de alcance
-
-
 def carrega_json_exemplo(arquivo):
     print(f"📁 Carregando JSON local ({arquivo})")
     with open(f'./jsons de exemplo/{arquivo}', "r", encoding="utf-8") as f:
@@ -54,8 +52,6 @@ def carrega_json_exemplo(arquivo):
         return dados_locais
 
 # processamento dos dados
-
-
 def processa_waze(alerts: List[Dict[str, Any]], start_date: datetime, end_date: datetime) -> pd.DataFrame:
     processado = []
     # iterando pelos objetos 'alert' para obter os dados do waze
@@ -80,7 +76,7 @@ def processa_waze(alerts: List[Dict[str, Any]], start_date: datetime, end_date: 
         bairro, zona = '', ''
         confiabilidade = alert.get('reliability')
 
-        # concatena tipo e subtipo e mapeia
+        # concatena tipo e subtipo e grava com um nome em portugues baseado na lookup table "mapeamentos.py"
         tipo_evento = TIPO_EVENTO_MAPPING.get(
             (type, subtype), f"{type}/{subtype}")
 
@@ -119,8 +115,6 @@ def processa_waze(alerts: List[Dict[str, Any]], start_date: datetime, end_date: 
         # incrementa o dict à lista 'processado' criada no inicio da função
         processado.append(alerta)
 
-        # identar para trás <<
-
     df = pd.DataFrame(processado)
     if not df.empty:
             # conversao de valores numéricos
@@ -136,9 +130,7 @@ def processa_waze(alerts: List[Dict[str, Any]], start_date: datetime, end_date: 
             df['event_date'] = df['data_evento'].dt.date.astype(str)
         else:
             df['event_date'] = None
-
     return df
-
 
 def processa_meteorologia(features: List[Dict[str, Any]], start_date: datetime, end_date: datetime) -> pd.DataFrame:
     processado2 = []
@@ -159,7 +151,7 @@ def processa_meteorologia(features: List[Dict[str, Any]], start_date: datetime, 
             print("Erro de parsing de data", e)
             continue
 
-        # filtrar para estar no range de data
+        # filtro que garante que os registros estejam no range de data
         if not (start_date <= data_evento <= end_date):
             continue
 
@@ -180,7 +172,7 @@ def processa_meteorologia(features: List[Dict[str, Any]], start_date: datetime, 
                 pass
             return None
 
-        # montando os dicts para o dataframe
+        # montando o dicionario com chave:valor correspondentes à API do waze para criar um dataframe
         dados = {
             "id": str(station.get("id")),
             "data_evento": data_evento,
@@ -197,7 +189,7 @@ def processa_meteorologia(features: List[Dict[str, Any]], start_date: datetime, 
     df = pd.DataFrame(processado2)
 
     if not df.empty:
-        # converter colunas numéricas
+        # converter colunas numéricas e ajustes de formato de data
         df['temperatura_atual'] = pd.to_numeric(
             df['temperatura_atual'], errors='coerce')
         df['temperatura_min'] = pd.to_numeric(
@@ -214,7 +206,7 @@ def processa_meteorologia(features: List[Dict[str, Any]], start_date: datetime, 
         df['event_date'] = df['data_evento'].dt.date.astype(str)
     else:
         df['event_date'] = None
-
+        
     return df
 
 # função que retorna a lista de datas (como strings) já existentes 
@@ -225,11 +217,10 @@ def get_datas(base_path: str) -> List[str]:
 
 # função que filtra apenas os registros do DataFrame com datas que ainda não foram salvas no caminho base
 def filter_new_data(df: pd.DataFrame, base_path: str) -> pd.DataFrame:
-    existing_dates = get_datas(base_path)
-    if not existing_dates or df.empty:
+    datas_existentes = get_datas(base_path)
+    if not datas_existentes or df.empty:
         return df
-    return df[~df['event_date'].isin(existing_dates)]
-
+    return df[~df['event_date'].isin(datas_existentes)]
 
 def main():
     # inicializa o parser de argumentos para receber datas de início e fim via linha de comando
@@ -296,7 +287,7 @@ def main():
     print(
         f"Diretorios criados em: {os.path.abspath(trafego_path)} e {os.path.abspath(meteo_path)}")
 
-    print("Pipeline completada.")
+    print("Pipeline completa.")
 
 if __name__ == '__main__':
     main()
